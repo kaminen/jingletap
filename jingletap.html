@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jingle Tap</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #00416a, #e4e5e6);
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-top: 20px;
+      color: #f8d210;
+      text-shadow: 2px 2px 5px #8b0000;
+    }
+
+    #fileInput {
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #f4a261;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #fileInput:hover {
+      background-color: #e76f51;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 20px auto;
+      max-width: 300px;
+    }
+
+    li {
+      background-color: #fff;
+      color: #333;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    button {
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #2a9d8f;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #21867a;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    /* Snow animation */
+    @keyframes snow {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(100vh); }
+    }
+
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      color: #fff;
+      font-size: 1rem;
+      pointer-events: none;
+      animation: snow 10s linear infinite;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎄 Jingle Tap 🎶</h1>
+  <input type="file" id="fileInput" accept="audio/*" />
+  <ul id="soundList"></ul>
+  <div class="footer">God Jul och Gott Nytt År! 🎅</div>
+
+  <!-- Snowflakes -->
+  <script>
+    function createSnowflake() {
+      const snowflake = document.createElement('div');
+      snowflake.textContent = '❄';
+      snowflake.classList.add('snowflake');
+      snowflake.style.left = Math.random() * 100 + 'vw';
+      snowflake.style.animationDuration = Math.random() * 3 + 7 + 's';
+      snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+      document.body.appendChild(snowflake);
+
+      setTimeout(() => {
+        snowflake.remove();
+      }, 10000);
+    }
+
+    setInterval(createSnowflake, 300);
+
+    const fileInput = document.getElementById('fileInput');
+    const soundList = document.getElementById('soundList');
+
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const listItem = document.createElement('li');
+        listItem.textContent = file.name;
+
+        const playButton = document.createElement('button');
+        playButton.textContent = 'Spela';
+        playButton.addEventListener('click', () => {
+          const audio = new Audio(URL.createObjectURL(file));
+          audio.play();
+        });
+
+        listItem.appendChild(playButton);
+        soundList.appendChild(listItem);
+      }
+    });
+  </script>
+</body>
+</html>
