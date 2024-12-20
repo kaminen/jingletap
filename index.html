@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jingle Tap</title>
+  <title>Jingle Tap med Inspelning</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -21,19 +21,19 @@
       text-shadow: 2px 2px 5px #8b0000;
     }
 
-    #fileInput {
-      margin: 20px auto;
+    button {
+      margin: 10px;
       padding: 10px 20px;
       font-size: 1rem;
       border: none;
       border-radius: 5px;
-      background-color: #f4a261;
+      background-color: #2a9d8f;
       color: #fff;
       cursor: pointer;
     }
 
-    #fileInput:hover {
-      background-color: #e76f51;
+    button:hover {
+      background-color: #21867a;
     }
 
     ul {
@@ -55,84 +55,63 @@
       box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     }
 
-    button {
-      padding: 5px 10px;
-      font-size: 0.9rem;
-      border: none;
-      border-radius: 5px;
-      background-color: #2a9d8f;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #21867a;
-    }
-
     .footer {
       margin-top: 20px;
       font-size: 0.9rem;
     }
-
-    /* Snow animation */
-    @keyframes snow {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(100vh); }
-    }
-
-    .snowflake {
-      position: fixed;
-      top: -10px;
-      color: #fff;
-      font-size: 1rem;
-      pointer-events: none;
-      animation: snow 10s linear infinite;
-    }
   </style>
 </head>
 <body>
-  <h1>🎄 Jingle Tap 🎶</h1>
-  <input type="file" id="fileInput" accept="audio/*" />
-  <ul id="soundList"></ul>
+  <h1>🎄 Jingle Tap med Inspelning 🎶</h1>
+  <button id="recordButton">🎙️ Börja Inspelning</button>
+  <button id="stopButton" disabled>⏹️ Stoppa Inspelning</button>
+  <ul id="recordingsList"></ul>
   <div class="footer">God Jul och Gott Nytt År! 🎅</div>
 
-  <!-- Snowflakes -->
   <script>
-    function createSnowflake() {
-      const snowflake = document.createElement('div');
-      snowflake.textContent = '❄';
-      snowflake.classList.add('snowflake');
-      snowflake.style.left = Math.random() * 100 + 'vw';
-      snowflake.style.animationDuration = Math.random() * 3 + 7 + 's';
-      snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
-      document.body.appendChild(snowflake);
+    let mediaRecorder;
+    let audioChunks = [];
+    const recordButton = document.getElementById('recordButton');
+    const stopButton = document.getElementById('stopButton');
+    const recordingsList = document.getElementById('recordingsList');
 
-      setTimeout(() => {
-        snowflake.remove();
-      }, 10000);
-    }
+    // Börja inspelning
+    recordButton.addEventListener('click', async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
 
-    setInterval(createSnowflake, 300);
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunks.push(event.data);
+      };
 
-    const fileInput = document.getElementById('fileInput');
-    const soundList = document.getElementById('soundList');
-
-    fileInput.addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      if (file) {
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        audioChunks = [];
+        const audioUrl = URL.createObjectURL(audioBlob);
         const listItem = document.createElement('li');
-        listItem.textContent = file.name;
 
         const playButton = document.createElement('button');
-        playButton.textContent = 'Spela';
+        playButton.textContent = '▶️ Spela';
         playButton.addEventListener('click', () => {
-          const audio = new Audio(URL.createObjectURL(file));
+          const audio = new Audio(audioUrl);
           audio.play();
         });
 
+        listItem.textContent = `Inspelning ${recordingsList.children.length + 1}`;
         listItem.appendChild(playButton);
-        soundList.appendChild(listItem);
-      }
+        recordingsList.appendChild(listItem);
+      };
+
+      mediaRecorder.start();
+      recordButton.disabled = true;
+      stopButton.disabled = false;
+    });
+
+    // Stoppa inspelning
+    stopButton.addEventListener('click', () => {
+      mediaRecorder.stop();
+      recordButton.disabled = false;
+      stopButton.disabled = true;
     });
   </script>
 </body>
