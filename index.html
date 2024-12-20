@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jingle Tap med Inspelning</title>
+  <title>Jingle Tap</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -21,19 +21,19 @@
       text-shadow: 2px 2px 5px #8b0000;
     }
 
-    button {
-      margin: 10px;
+    #fileInput {
+      margin: 20px auto;
       padding: 10px 20px;
       font-size: 1rem;
       border: none;
       border-radius: 5px;
-      background-color: #2a9d8f;
+      background-color: #f4a261;
       color: #fff;
       cursor: pointer;
     }
 
-    button:hover {
-      background-color: #21867a;
+    #fileInput:hover {
+      background-color: #e76f51;
     }
 
     ul {
@@ -55,6 +55,20 @@
       box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     }
 
+    button {
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #2a9d8f;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #21867a;
+    }
+
     .footer {
       margin-top: 20px;
       font-size: 0.9rem;
@@ -62,56 +76,31 @@
   </style>
 </head>
 <body>
-  <h1>🎄 Jingle Tap med Inspelning 🎶</h1>
-  <button id="recordButton">🎙️ Börja Inspelning</button>
-  <button id="stopButton" disabled>⏹️ Stoppa Inspelning</button>
-  <ul id="recordingsList"></ul>
+  <h1>🎄 Jingle Tap 🎶</h1>
+  <input type="file" id="fileInput" accept="audio/*" />
+  <ul id="soundList"></ul>
   <div class="footer">God Jul och Gott Nytt År! 🎅</div>
 
   <script>
-    let mediaRecorder;
-    let audioChunks = [];
-    const recordButton = document.getElementById('recordButton');
-    const stopButton = document.getElementById('stopButton');
-    const recordingsList = document.getElementById('recordingsList');
+    const fileInput = document.getElementById('fileInput');
+    const soundList = document.getElementById('soundList');
 
-    // Börja inspelning
-    recordButton.addEventListener('click', async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream);
-
-      mediaRecorder.ondataavailable = (event) => {
-        audioChunks.push(event.data);
-      };
-
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        audioChunks = [];
-        const audioUrl = URL.createObjectURL(audioBlob);
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
         const listItem = document.createElement('li');
+        listItem.textContent = file.name;
 
         const playButton = document.createElement('button');
         playButton.textContent = '▶️ Spela';
         playButton.addEventListener('click', () => {
-          const audio = new Audio(audioUrl);
+          const audio = new Audio(URL.createObjectURL(file));
           audio.play();
         });
 
-        listItem.textContent = `Inspelning ${recordingsList.children.length + 1}`;
         listItem.appendChild(playButton);
-        recordingsList.appendChild(listItem);
-      };
-
-      mediaRecorder.start();
-      recordButton.disabled = true;
-      stopButton.disabled = false;
-    });
-
-    // Stoppa inspelning
-    stopButton.addEventListener('click', () => {
-      mediaRecorder.stop();
-      recordButton.disabled = false;
-      stopButton.disabled = true;
+        soundList.appendChild(listItem);
+      }
     });
   </script>
 </body>
