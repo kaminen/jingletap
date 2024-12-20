@@ -3,37 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jingle Tap</title>
+  <title>Jingle Tap 🔥</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(to bottom, #00416a, #e4e5e6);
-      color: #fff;
+      background: linear-gradient(to bottom, #1a1a1a, #3d0000);
+      color: #ff6666;
       text-align: center;
       margin: 0;
       padding: 0;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       margin-top: 20px;
-      color: #f8d210;
-      text-shadow: 2px 2px 5px #8b0000;
+      color: #ff0000;
+      text-shadow: 2px 2px 5px #000000;
+      text-transform: uppercase;
     }
 
     #fileInput {
       margin: 20px auto;
       padding: 10px 20px;
-      font-size: 1rem;
-      border: none;
+      font-size: 1.1rem;
+      border: 2px solid #ff0000;
       border-radius: 5px;
-      background-color: #f4a261;
+      background-color: #660000;
       color: #fff;
       cursor: pointer;
+      transition: all 0.2s ease-in-out;
     }
 
     #fileInput:hover {
-      background-color: #e76f51;
+      background-color: #990000;
+      border-color: #ff3333;
     }
 
     ul {
@@ -44,42 +47,67 @@
     }
 
     li {
-      background-color: #fff;
-      color: #333;
+      background-color: #3d0000;
+      color: #fff;
       margin: 10px 0;
-      padding: 10px;
-      border-radius: 10px;
+      padding: 15px;
+      border-radius: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
     }
 
     button {
-      padding: 5px 10px;
-      font-size: 0.9rem;
-      border: none;
+      padding: 7px 15px;
+      font-size: 1rem;
+      border: 2px solid #ff3333;
       border-radius: 5px;
-      background-color: #2a9d8f;
+      background-color: #660000;
       color: #fff;
       cursor: pointer;
+      transition: all 0.2s ease-in-out;
     }
 
     button:hover {
-      background-color: #21867a;
+      background-color: #990000;
+      border-color: #ff6666;
     }
 
     .footer {
       margin-top: 20px;
       font-size: 0.9rem;
+      color: #ff6666;
+    }
+
+    /* Mobilanpassning */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      li {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+
+      button {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+      }
+
+      #fileInput {
+        font-size: 1rem;
+        padding: 8px 15px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>🎄 Jingle Tap 🎶</h1>
+  <h1>🔥 Jingle Tap 🔥</h1>
   <input type="file" id="fileInput" accept="audio/*" />
   <ul id="soundList"></ul>
-  <div class="footer">God Jul och Gott Nytt År! 🎅</div>
+  <div class="footer">Släpp loss dina ljud och gör kaos! 🔥</div>
 
   <script>
     const fileInput = document.getElementById('fileInput');
